@@ -1,7 +1,11 @@
 import Database from "better-sqlite3";
 import path from "path";
 
-const DB_PATH = path.join(process.cwd(), "data", "educurric.db");
+// On Vercel the deployed filesystem is read-only; /tmp is writable per-instance.
+// Locally we keep the DB in data/ so it persists across dev restarts.
+const DB_PATH = process.env.VERCEL
+  ? "/tmp/educurric.db"
+  : path.join(process.cwd(), "data", "educurric.db");
 
 let _db: Database.Database | null = null;
 

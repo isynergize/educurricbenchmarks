@@ -1,20 +1,10 @@
 import Dashboard from "@/components/Dashboard";
-import type { DashboardData, FilterOptions } from "@/lib/types";
-
-async function getDashboardData(): Promise<DashboardData> {
-  const res = await fetch("http://localhost:3000/api/dashboard", { cache: "no-store" });
-  return res.json();
-}
-
-async function getFilterOptions(): Promise<FilterOptions> {
-  const res = await fetch("http://localhost:3000/api/filters", { cache: "no-store" });
-  return res.json();
-}
+import { getDashboardData, getFilterOptions } from "@/lib/queries";
 
 export default async function Home() {
   const [data, filterOptions] = await Promise.all([
-    getDashboardData(),
-    getFilterOptions(),
+    Promise.resolve(getDashboardData()),
+    Promise.resolve(getFilterOptions()),
   ]);
 
   return <Dashboard initialData={data} filterOptions={filterOptions} />;
